@@ -2,7 +2,7 @@
 """Lockboxes"""
 
 
-def canUnlockAll(boxes):    
+def canUnlockAll(boxes):
     """check if all the boxes can be opened"""
     keyset = {0}
 
