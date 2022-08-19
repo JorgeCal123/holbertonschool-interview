@@ -1,16 +1,41 @@
 #!/usr/bin/python3
-import random
-import sys
-from time import sleep
-import datetime
+""" Script that reads stdin line by line and computes metrics."""
 
-for i in range(10000):
-    sleep(random.random())
-    sys.stdout.write("{:d}.{:d}.{:d}.{:d} - [{}] \"GET /projects/260 HTTP/1.1\" {} {}\n".format(
-        random.randint(1, 255), random.randint(
-            1, 255), random.randint(1, 255), random.randint(1, 255),
-        datetime.datetime.now(),
-        random.choice([200, 301, 400, 401, 403, 404, 405, 500]),
-        random.randint(1, 1024)
-    ))
-    sys.stdout.flush()
+import sys
+
+dlist = {"size": 0,
+         "lines": 1}
+
+errors = {"200": 0, "301": 0, "400": 0, "401": 0,
+          "403": 0, "404": 0, "405": 0, "500": 0}
+
+
+def printf():
+    """ Print codes and numbers"""
+    print("File size: {}".format(dlist["size"]))
+    for key in sorted(errors.keys()):
+        if errors[key] != 0:
+            print("{}: {}".format(key, errors[key]))
+
+
+def datasize(data):
+    """ Count file codes and size"""
+    dlist["size"] += int(data[-1])
+    if data[-2] in errors:
+        errors[data[-2]] += 1
+
+
+if __name__ == "__main__":
+    try:
+        for line in sys.stdin:
+            try:
+                datasize(line.split(" "))
+            except:
+                pass
+            if dlist["lines"] % 10 == 0:
+                printf()
+            dlist["lines"] += 1
+    except KeyboardInterrupt:
+        printf()
+        raise
+    printf()
