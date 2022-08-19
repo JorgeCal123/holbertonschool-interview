@@ -31,12 +31,9 @@ def recorrer():
 
             if (cont == 10):
                 print_result(result, sum)
-                sum = 0
                 cont = 0
-                result.clear()
     except KeyboardInterrupt:
-        print_result(result, sum)
-        raise
+        pass
 
     print_result(result, sum)
 
