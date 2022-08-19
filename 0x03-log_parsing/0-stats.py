@@ -1,39 +1,41 @@
 #!/usr/bin/python3
+"""
+reads stdin line by line and computes metrics
+"""
 
-if __name__ == "__main__":
-    import sys
-    import signal
+import sys
 
-    c = fileSize = 0
-    statCount = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
-                 "404": 0, "405": 0, "500": 0}
+STATUS = {'200': 0,
+          '301': 0,
+          '400': 0,
+          '401': 0,
+          '403': 0,
+          '404': 0,
+          '405': 0,
+          '500': 0}
 
-    def handleTen(statCount, fileSize):
-        print("File size: {}".format(fileSize))
-        for key in sorted(statCount.keys()):
-            if statCount[key] == 0:
-                continue
-            print("{}: {}".format(key, statCount[key]))
-
-    try:
-        for line in sys.stdin:
-            c += 1
-            split = line.split(" ")
-            try:
-                status = split[-2]
-                fileSize += int(split[-1])
-
-                if status in statCount:
-                    statCount[status] += 1
-            except Exception:
-                pass
-
-            if c % 10 == 0:
-                handleTen(statCount, fileSize)
-
-        else:
-            handleTen(statCount, fileSize)
-
-    except (KeyboardInterrupt, SystemExit):
-        handleTen(statCount, fileSize)
-        raise
+total_size = 0
+n = 0
+try:
+    for argument in sys.stdin:
+        arguments = argument.split(" ")
+        if len(arguments) > 2:
+            status = arguments[-2]
+            file_size = int(arguments[-1])
+            if status in STATUS:
+                STATUS[status] += 1
+            total_size += file_size
+            n += 1
+            if n == 10:
+                print("File size: {:d}".format(total_size))
+                for key, value in sorted(STATUS.items()):
+                    if value != 0:
+                        print("{}: {:d}".format(key, value))
+                n = 0
+except KeyboardInterrupt:
+    pass
+finally:
+    print("File size: {:d}".format(total_size))
+    for key, value in sorted(STATUS.items()):
+        if value != 0:
+            print("{}: {:d}".format(key, value))
