@@ -35,7 +35,7 @@ def recorrer():
                 cont = 0
                 result.clear()
     except KeyboardInterrupt:
-        print_result()
+        print_result(result, sum)
         raise
 
     print_result(result, sum)
@@ -45,8 +45,8 @@ def print_result(result, sum):
     """print the information according to a format"""
     if(result):
         print("File size: {}".format(sum))
-        for sts_code in result:
-            print("{}: {}".format(sts_code, result.get(sts_code)))
+        for key, value in sorted(result.items()):
+            print("{}: {}".format(key, value))
 
 if __name__ == "__main__":
     recorrer()
