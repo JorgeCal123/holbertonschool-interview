@@ -44,9 +44,9 @@ def recorrer():
 def print_result(result, sum):
     """print the information according to a format"""
     if(result):
-        print("File size: " + str(sum))
+        print("File size: {}".format(sum))
         for sts_code in result:
-            print(str(sts_code) + ": " + str(result.get(sts_code)))
+            print("{}: {}".format(sts_code, result.get(sts_code)))
 
 if __name__ == "__main__":
     recorrer()
