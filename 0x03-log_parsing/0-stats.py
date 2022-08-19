@@ -1,35 +1,42 @@
 #!/usr/bin/python3
-""" Write a script that reads stdin line by line and
-computes metrics
-"""
+"""Python script that reads stdin line by line and computes metrics"""
+
 import sys
 
 
-def print_sorted_dict(status_codes):
-    """
-    status_code with args n times
-    """
-    sorted_keys = sorted(status_codes.keys())
-    print('\n'.join(["{:d}: {:d}".format(k, status_codes[k])
-                     for k in sorted_keys if status_codes[k] != 0]))
+def print_n(t_file_size, status):
+    """Prints total file size and status list"""
+    print("File size: {:d}".format(t_file_size))
+    for key, value in sorted(status.items()):
+        if value != 0:
+            print("{}: {}".format(key, value))
 
 
-def __run():
-    try:
-        total = 0
-        status_codes = \
-            {code: 0 for code in [200, 301, 400, 401, 403, 404, 405, 500]}
-        for i, rawline in enumerate(sys.stdin, 1):
-            words = rawline.split()
-            total += int(words[-1])
-            status_codes[int(words[-2])] += 1
-            if i % 10 == 0:
-                print("File size: {:d}".format(total))
-                print_sorted_dict(status_codes)
-    finally:
-        print("File size: {:d}".format(total))
-        print_sorted_dict(status_codes)
+status = {'200': 0, '301': 0, '400': 0, '401': 0,
+          '403': 0, '404': 0, '405': 0, '500': 0}
 
+t_file_size = 0
+count = 0
+try:
+    for line in sys.stdin:
+        args = line.split()
 
-if __name__ == "__main__":
-    __run()
+        if len(args) > 2:
+            status_code = args[-2]
+            file_size = int(args[-1])
+
+            if status_code in status:
+                status[status_code] += 1
+
+            t_file_size += file_size
+            count += 1
+
+            if count == 10:
+                print_n(t_file_size, status)
+                count = 0
+
+except KeyboardInterrupt:
+    pass
+
+finally:
+    print_n(t_file_size, status)
