@@ -48,5 +48,5 @@ def print_result(result, sum):
         for sts_code in result:
             print(str(sts_code) + ": " + str(result.get(sts_code)))
 
-
-recorrer()
+if __name__ == "__main__":
+    recorrer()
