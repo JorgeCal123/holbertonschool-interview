@@ -1,49 +1,26 @@
 #!/usr/bin/python3
-"""Log parsing"""
+""" Log parsing"""
 import sys
 
 
-def read():
-    """reading of each line that enters the system"""
-    read = sys.stdin.read().split('\n')
-    return read
-
-
-def recorrer():
-    """loop through the entire data array"""
-    cont = 0
-    result = {}
-    sum = 0
-    try:
-        for item in read():
-            for status_code in [200, 301, 400, 401, 403, 404, 405, 500]:
-                metrics = item.split(' ')
-                try:
-                    if(metrics[7] == str(status_code)):
-                        if (result.get(status_code) is None):
-                            result[status_code] = 1
-                        else:
-                            result[status_code] = result.get(status_code) + 1
-                        sum += int(metrics[8])
-                        cont += 1
-                except Exception:
-                    pass
-
-            if (cont == 10):
-                print_result(result, sum)
-                cont = 0
-    except KeyboardInterrupt:
-        pass
-
-    print_result(result, sum)
-
-
-def print_result(result, sum):
-    """print the information according to a format"""
-    if(result):
-        print("File size: {}".format(sum))
-        for key, value in sorted(result.items()):
+t_size = 0
+s_codes = {"200": 0, "301": 0, "400": 0, "401": 0,
+           "403": 0, "404": 0, "405": 0, "500": 0}
+try:
+    for count, log in enumerate(sys.stdin, 1):
+        splt = log.split(" ")
+        if len(splt) < 2:
+            continue
+        if splt[-2] in s_codes:
+            s_codes[splt[-2]] += 1
+        t_size += int(splt[-1])
+        if count % 10 == 0:
+            print("File size: {}".format(t_size))
+            for key, value in sorted(s_codes.items()):
+                if value > 0:
+                    print("{}: {}".format(key, value))
+finally:
+    print("File size: {}".format(t_size))
+    for key, value in sorted(s_codes.items()):
+        if value > 0:
             print("{}: {}".format(key, value))
-
-if __name__ == "__main__":
-    recorrer()
