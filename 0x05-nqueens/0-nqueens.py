@@ -1,43 +1,44 @@
 #!/usr/bin/python3
-"""N Queens"""
+""" N-queens """
 import sys
 
 
-def nQueens(N, r, queenList):
-    """ method nQuens"""
-    for i in range(N):
-        flag = 0
-        for j in queenList:
-            if abs(i - j[1]) == abs(r - j[0]):
-                flag = 1
-                break
-            if i == j[1]:
-                flag = 1
-                break
-        if flag == 0:
-            queenList.append([r, i])
-            if r != N - 1:
-                nQueens(N, r + 1, queenList)
-            else:
-                print(queenList)
-            queenList.pop()
+if len(sys.argv) > 2 or len(sys.argv) < 2:
+    print("Usage: nqueens N")
+    exit(1)
 
-if __name__ == "__main__":
-    """method main"""
+if not sys.argv[1].isdigit():
+    print("N must be a number")
+    exit(1)
 
-    if len(sys.argv) != 2:
-        print("Usage: nqueens N")
-        exit(1)
+if int(sys.argv[1]) < 4:
+    print("N must be at least 4")
+    exit(1)
 
-    if isinstance(sys.argv[1], int):
-        print("N must be a number")
-        exit(1)
+n = int(sys.argv[1])
 
-    N = int(sys.argv[1])
-    if (N < 4):
-        print("N must be at least 4")
-        exit(1)
 
-    r = 0
-    queenList = []
-    nQueens(N, r, queenList)
+def queens(n, i=0, a=[], b=[], c=[]):
+    """ method queens """
+    if i < n:
+        for j in range(n):
+            if j not in a and i + j not in b and i - j not in c:
+                yield from queens(n, i + 1, a + [j], b + [i + j], c + [i - j])
+    else:
+        yield a
+
+
+def solve(n):
+    """ solve """
+    k = []
+    i = 0
+    for solution in queens(n, 0):
+        for s in solution:
+            k.append([i, s])
+            i += 1
+        print(k)
+        k = []
+        i = 0
+
+
+solve(n)
