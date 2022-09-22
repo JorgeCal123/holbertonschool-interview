@@ -5,7 +5,7 @@ Main file for testing
 
 
 def makeChange(coins, total):
-    """make change"""
+    """Make change"""
     coins.sort(reverse=True)
     total_coins = 0
     sum_coins = 0
@@ -15,12 +15,10 @@ def makeChange(coins, total):
         while sum_coins <= total:
             sum_coins += coin
             total_coins += 1
-
             if sum_coins == total:
                 break
             if sum_coins > total:
                 total_coins -= 1
-
                 sum_coins -= coin
                 break
     if sum_coins != total:
