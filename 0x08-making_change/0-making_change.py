@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 """
-Main file for testing
+Change comes from within
 """
 
 
 def makeChange(coins, total):
     """
-    Make change
+    determine the fewest number of coins needed
+    to meet a given amount total
     """
     if total <= 0:
         return 0
