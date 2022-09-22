@@ -3,8 +3,10 @@
 Main file for testing
 """
 
+
 def makeChange(coins, total):
-    coins.sort(reverse = True)
+    """make change"""
+    coins.sort(reverse=True)
     total_coins = 0
     sum_coins = 0
     if total <= 0:
