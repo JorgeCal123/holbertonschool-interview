@@ -5,11 +5,9 @@
 def island_perimeter(grid):
     """returns the perimeter of the island"""
     perimeter = 0
-    isla = 0
     for i in range(len(grid)):
         for j in range(len(grid[0])):
             if grid[i][j] == 1:
-                isla += 1
                 "arriba"
                 if grid[i - 1][j] == 0:
                     perimeter += 1
